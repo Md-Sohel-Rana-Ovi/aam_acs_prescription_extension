@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_external_medicine,access_external_medicine,model_external_medicine,,1,1,1,1
+access_external_medicine_line,access_external_medicine_line,model_external_medicine_line,,1,1,1,1
+access_lab_test_prescription,access_lab_test_prescription,model_lab_test_prescription,,1,1,1,1
+access_doctor_suggestion,access_doctor_suggestion,model_doctor_suggestion,,1,1,1,1

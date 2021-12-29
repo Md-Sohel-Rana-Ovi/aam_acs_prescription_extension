@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Lab Test -->
+    <record id="dsl_view_prescription_order_form_inherited" model="ir.ui.view">
+        <field name="name">prescription.order.form.inherited</field>
+        <field name="model">prescription.order</field>
+        <field name="inherit_id" ref="acs_hms.view_hms_prescription_order_form"/>
+        <field name="priority">24</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='prescription_line_ids']" position="after">
+                <group string="External Medicine"/>
+                <field name="external_medicine_ids" nolabel="1" colspan="4">
+                    <tree editable='bottom'>
+                        <field name="external_medicine_id" string="Medicine Name"/>
+                        <field name="active_component_ids" widget="many2many_tags"/>
+                        <field name="allow_substitution"/>
+                        <field name="dose" required="1"/>
+                        <field name="qty_per_day" required="1" invisible="1"/>
+                        <field name="days" required='1'/>
+                        <field name="quantity" required="1"/>
+                        <field name="common_dosage" required="1"/>
+                        <field name="short_comment"/>
+                    </tree>
+                </field>
+                <group string="Lab Test"/>
+                <field name="test_ids" nolabel="1" colspan="4">
+                    <tree editable="bottom">
+                        <field name="labtest_id"/>
+                        <field name="note"/>
+                        <field name="prescription_id" invisible="1"/>
+                    </tree>
+                </field>
+            </xpath>
+            <xpath expr="//field[@name='notes']" position="before">
+                <group colspan="4">
+                    <field name="follow_up_date"/>
+                </group>
+                <group string="Instructions"/>
+                <field name="suggestion_ids" nolabel="1" colspan="4">
+                    <tree editable='bottom'>
+                        <field name="name"/>
+                    </tree>
+                </field>
+            </xpath>
+        </field>
+    </record>
+
+
+    <template id="dsl_report_acs_lab_test_view_form_inherited" inherit_id="acs_hms.report_hms_prescription_document">
+        <xpath expr="//div[@class='page']" position="replace">
+            <div class="page">
+                <center>
+                    <h2>Medical Prescription</h2>
+                </center>
+                <h3>Prescription:
+                    <span t-field="doc.name"/>
+                </h3>
+                <center>
+                    <table style="width:900px;height:100px;margin:10 10 10 10">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <b>Patient:</b>
+                                </td>
+                                <td>
+                                    <span t-field="doc.patient_id"/>
+                                </td>
+                                <td>
+                                    <b>Prescription Date:</b>
+                                </td>
+                                <td>
+                                    <span t-field="doc.prescription_date"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Age:</b>
+                                </td>
+                                <td>
+                                    <span t-field="doc.patient_age"/>
+                                </td>
+                                <td>
+                                    <b>Prescribing Doctor:</b>
+                                </td>
+                                <td>
+                                    <span t-field="doc.physician_id"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </center>
+                <p>
+                    <b>Chief Complaints:</b>
+                    <br/>
+                    <span t-esc="doc.appointment_id.chief_complain"/>
+                    <br/>
+                </p>
+                <p>
+                    <b>Diseases:</b>
+                    <br/>
+                    <t t-foreach="doc.diseases_ids" t-as="disease">
+                        <span t-esc="disease.name"/>/
+                    </t>
+                    <br/>
+                </p>
+                <p style="font-weight: bold;">Rx</p>
+                <br/>
+                <center>
+                    <t t-set="index" t-value="1"/>
+                    <table style="width:900px;height:100px;margin:10 10 10 10;padding:5">
+                        <tbody>
+                            <tr style="border-bottom:1px solid black;margin:10 10 10 10;font-weight: bold;">
+                                <td>Sr.No</td>
+                                <td>Description</td>
+                                <td>Frequency</td>
+                                <td>Daily Dose</td>
+                                <td>Days</td>
+                                <td>Quantity</td>
+                                <td>Subsititution?</td>
+                                <td>Comment</td>
+                            </tr>
+                            <t t-foreach="doc.prescription_line_ids" t-as="i">
+                                <tr style="border-bottom:0.2px solid grey;margin:10 10 10 10">
+                                    <td>
+                                        <span t-esc="index"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="i.product_id.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="i.common_dosage_id.abbreviation"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="i.active_component_ids.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="i.days"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="i.quantity"/>
+                                    </td>
+                                    <td>
+                                        <t t-if="i.allow_substitution">
+                                            <span>YES</span>
+                                        </t>
+                                        <t t-else="">
+                                            <span>NO</span>
+                                        </t>
+                                    </td>
+                                    <td>
+                                        <span t-esc="i.short_comment"/>
+                                    </td>
+                                </tr>
+                                <t t-set="index" t-value="index + 1"/>
+                            </t>
+                            <t t-foreach="doc.external_medicine_ids" t-as="i" t-value="1">
+                                <tr style="border-bottom:0.2px solid grey;margin:10 10 10 10">
+                                    <td>
+                                        <span t-esc="index"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="i.external_medicine_id.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="i.common_dosage.abbreviation"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="i.active_component_ids.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="i.days"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="i.quantity"/>
+                                    </td>
+                                    <td>
+                                        <t t-if="i.allow_substitution">
+                                            <span>YES</span>
+                                        </t>
+                                        <t t-else="">
+                                            <span>NO</span>
+                                        </t>
+                                    </td>
+                                    <td>
+                                        <span t-esc="i.short_comment"/>
+                                    </td>
+                                </tr>
+                                <t t-set="index" t-value="index + 1"/>
+                            </t>
+                        </tbody>
+                    </table>
+                </center>
+                <br/>
+                <br/>
+                <p>
+                    <b>Lab Test:</b>
+                    <br/>
+                </p>
+                <center>
+                    <t t-set="index" t-value="1"/>
+                    <table style="width:900px;height:100px;margin:10 10 10 10;padding:5">
+                        <tbody>
+                            <tr style="border-bottom:1px solid black;margin:10 10 10 10;font-weight: bold;">
+                                <td>Sr.No</td>
+                                <td>Description</td>
+                                <td>Note</td>
+                            </tr>
+                            <t t-foreach="doc.test_ids" t-as="i">
+                                <tr style="border-bottom:0.2px solid grey;margin:10 10 10 10">
+                                    <td>
+                                        <span t-esc="index"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="i.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="i.note"/>
+                                    </td>
+                                </tr>
+                                <t t-set="index" t-value="index + 1"/>
+                            </t>
+                        </tbody>
+                    </table>
+                </center>
+                <br/>
+                <br/>
+                <p>
+                    <b>Doctor's Advice:</b>
+                    <br/>
+                </p>
+                <ul>
+                    <t t-foreach="doc.suggestion_ids" t-as="i">
+                        <li>
+                            <span t-esc="i.name"/>
+                        </li>
+                    </t>
+                </ul>
+                <p>
+                    <b>Follow Up Date:</b>
+                    <span t-esc="doc.follow_up_date"/>
+                    <br/>
+                </p>
+                <p>
+                    <b>Comment(If Any):</b>
+                    <br/>
+                    <span t-esc="doc.notes"/>
+                </p>
+                <br/>
+                <p>
+                    <b>Doctor’s Stamp/Signature</b>
+                </p>
+            </div>
+        </xpath>
+    </template>
+
+
+    <record id="view_doctor_suggestion_tree" model="ir.ui.view">
+        <field name="name">doctor.suggestion.tree</field>
+        <field name="model">doctor.suggestion</field>
+        <field name="arch" type="xml">
+            <tree editable="top">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_doctor_suggestion" model='ir.actions.act_window'>
+        <field name="name">Suggestion</field>
+        <field name="res_model">doctor.suggestion</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_doctor_suggestion" parent="acs_hms.menu_pres_cofig" action="action_doctor_suggestion"
+              name="Suggestion"/>
+
+
+</odoo>

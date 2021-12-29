@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Root Menu -->
+    <menuitem id="menu_requisition" name="Requisition" sequence="35" web_icon="aam_requisition,static/description/icon.png"/> 
+    <menuitem id='menu_requisition_order' parent='menu_requisition' name="Requisition Order" action='aam_requisition_action' sequence="1"/>
+
+</odoo>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_acs_lab_test">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="oe_structure"/>
+                        <h2 class="text-center mt32">Investigation</h2>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <b>Patient:</b>
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.patient_id"/>
+                                    </td>
+                                    <td>
+                                        <b>Test Date:</b>
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.date_analysis"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <b>Prescribing Doctor:</b>
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.physician_id"/>
+                                    </td>
+                                    <td>
+                                        <b>Reference:</b>
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.name"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-condensed mt16">
+                            <thead>
+                                <tr>
+                                    <th>Test Name</th>
+                                    <th>Normal Range</th>
+                                    <th>Unit(s) / Method</th>
+                                    <th>Result</th>
+                                    <th>Remark</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="doc.critearea_ids" t-as="line">
+                                    <tr>
+                                        <td>
+                                            <span t-esc="line.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line.normal_range"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line.uom_id.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line.result"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line.remark"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <p class="mt64">
+                            <b>Comment(If Any):</b>
+                            <br/>
+                            <span t-esc="doc.note"/>
+                        </p>
+                        <p class="mt16">
+                            <b>Doctor’s Stamp/Signature</b>
+                        </p>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <report id="action_report_acs_lab_test"
+        string="Lab Report"
+        model="patient.laboratory.test"
+        report_type="qweb-pdf"
+        file="acs_hms_laboratory.report_acs_lab_test" 
+        name="acs_hms_laboratory.report_acs_lab_test" 
+   />
+
+</odoo>

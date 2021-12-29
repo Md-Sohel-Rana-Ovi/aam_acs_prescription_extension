@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record  id="category_store_requisition_security" model="ir.module.category">
+            <field name="name">Store Requisition</field>
+        </record>
+
+        <record id="group_store_requisition_department_manager" model="res.groups">
+            <field name="name">Department Manager</field>
+            <field name="category_id" ref="category_store_requisition_security" />
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record>
+
+        <record id="group_store_requisition_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="category_store_requisition_security" />
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record>
+
+        <record id="group_store_requisition_store_keeper" model="res.groups">
+            <field name="name">User</field>
+            <field name="category_id" ref="category_store_requisition_security" />
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record>
+
+    </data>
+</odoo>
