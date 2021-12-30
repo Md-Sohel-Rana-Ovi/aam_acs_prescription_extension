@@ -131,7 +131,7 @@
                                         <span t-esc="i.common_dosage_id.abbreviation"/>
                                     </td>
                                     <td>
-                                        <span t-esc="i.active_component_ids.name"/>
+                                        <span t-esc="i.dose"/>
                                     </td>
                                     <td>
                                         <span t-esc="i.days"/>
@@ -165,7 +165,7 @@
                                         <span t-esc="i.common_dosage.abbreviation"/>
                                     </td>
                                     <td>
-                                        <span t-esc="i.active_component_ids.name"/>
+                                        <span t-esc="i.dose"/>
                                     </td>
                                     <td>
                                         <span t-esc="i.days"/>
@@ -211,7 +211,7 @@
                                         <span t-esc="index"/>
                                     </td>
                                     <td>
-                                        <span t-esc="i.name"/>
+                                        <span t-esc="i.labtest_id.name"/>
                                     </td>
                                     <td>
                                         <span t-esc="i.note"/>
